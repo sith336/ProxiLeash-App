@@ -1,0 +1,19 @@
+{
+  "light_mode": {
+    "primary": "#5056A4",
+    "secondary": "#AF98F1",
+    "contrast": "#F5DC63",
+    "background": "#FEFEFE",
+    "popbackground": "#F2F2F7",
+    "text": "#000000"
+  }, 
+
+  "dark_mode": {
+    "primary": "#5056A4",
+    "secondary": "#AF98F1",
+    "contrast": "#F5DC63",
+    "background": "#010101",
+    "popbackground": "#1C1C1C",
+    "text": "#FFFFFF"
+  }
+}
