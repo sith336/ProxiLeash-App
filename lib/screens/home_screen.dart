@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proxileash/models/app_state.dart';
 
+import '../widgets/circle_container.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -25,81 +27,68 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
 
-        children: [
-          SizedBox(height: 32),
-
-          _buildProximityIndicator(),
-
-          Spacer(),
-          SizedBox(height: 32),
-        ],
+        children: [SizedBox(height: 32), _deviceStatus(), SizedBox(height: 32)],
       ),
     );
   }
 
-  Widget _buildProximityIndicator() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // circle size
-        final size = 350.0;
+  Widget _deviceStatus() {
+    return Expanded(
+      child: CircleContainer(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Device Status
+            appState.deviceHasConnected
+                // While Connected
+                ? (!appState.deviceHasDisconnected
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Monitoring...',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.green,
+                              ),
+                            ),
 
-        return Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: Colors.white,
+                            Text(
+                              'Nearby',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.green,
+                              ),
+                            ),
+                            Text(
+                              'Signal Strength',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.green,
+                              ),
+                            ),
 
-            shape: BoxShape.circle,
-
-            border: Border.all(color: const Color(0xFFD9DAEC), width: 5),
-
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 20,
-                spreadRadius: 2,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (appState.isDeviceConnected) ...[
-                Text(
-                  (appState.isInProximity ? "Alert!" : "Monitoring..."),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87,
+                            Text(
+                              'Strong',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          'Device Disconnected!',
+                          style: TextStyle(fontSize: 24, color: Colors.red),
+                        ))
+                // No device connected
+                : const Text(
+                    'No Device Connected',
+                    style: TextStyle(fontSize: 24, color: Colors.red),
                   ),
-                ),
-                SizedBox(height: 8),
-              ],
-
-              Text(
-                appState.isDeviceConnected
-                    ? (appState.isInProximity
-                          ? "Disconnected"
-                          : "Monitoring...")
-                    : "No Device Connected",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: appState.isDeviceConnected
-                      ? (appState.isInProximity
-                            ? Color(0xFF555BAF)
-                            : Colors.black)
-                      : Colors.black54,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

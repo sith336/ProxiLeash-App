@@ -47,66 +47,36 @@ class _MainScreenState extends State<MainScreen> {
           ),
 
           // =========================
-          // TOP BAR
-          // Outside SafeArea
-          // =========================
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.only(
-                top: MediaQuery.paddingOf(context).top + 16,
-                bottom: 16,
-                left: 16,
-                right: 16,
-              ),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainer.withValues(
-                  alpha: 0.8,
-                ),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    "ProxiLeash",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  Text(
-                    screenTitles[currentScreen],
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // =========================
           // SAFE AREA CONTENT
           // =========================
           SafeArea(
             child: Column(
               children: [
-                // Space for the top bar
-                SizedBox(height: MediaQuery.sizeOf(context).height * 0.12),
+                // =========================
+                // HEADER
+                // =========================
+                Column(
+                  children: [
+                    Text("ProxiLeash", style: theme.textTheme.headlineLarge),
+
+                    const SizedBox(height: 16),
+                    Text(
+                      screenTitles[currentScreen],
+                      style: theme.textTheme.headlineSmall,
+                    ),
+                  ],
+                ),
 
                 SizedBox(height: 32),
 
-                // Screen
+                // =========================
+                // SCREEN CONTENT
+                // =========================
                 Expanded(child: screens[currentScreen]),
 
-                // Navigation
+                // =========================
+                // NAVIGATION BAR
+                // =========================
                 FloatNavigationBar(
                   currentScreen: currentScreen,
                   onScreenChanged: changeScreen,

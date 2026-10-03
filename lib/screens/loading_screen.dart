@@ -44,7 +44,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const CircleAvatar(),
+                Icon(
+                  Icons.alarm,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ],
             ),
           ),

@@ -1,19 +1,50 @@
 import 'package:flutter/foundation.dart';
 
+import '../services/bluetooth_service.dart';
+import 'device.dart';
+
 class AppState extends ChangeNotifier {
-  bool _isDeviceConnected = false;
-  bool _isInProximity = false;
+  final BluetoothService bluetoothService = BluetoothService();
 
-  bool get isDeviceConnected => _isDeviceConnected;
-  bool get isInProximity => _isInProximity;
+  bool deviceHasConnected = false;
+  bool deviceHasDisconnected = false;
 
-  void setDeviceConnected(bool value) {
-    _isDeviceConnected = value;
+  // Scanning Functions
+
+  Future<void> startScan() async {
+    await bluetoothService.startScan();
     notifyListeners();
   }
 
-  void setInProximity(bool value) {
-    _isInProximity = value;
+  Future<void> stopScan() async {
+    await bluetoothService.stopScan();
     notifyListeners();
+  }
+
+  Map<String, Device> getScannedDevices() {
+    return bluetoothService.scannedDevices;
+  }
+
+  // Connection Functions
+
+  Future<void> connectToDevice(Device device) async {
+    device.isConnected = true;
+    deviceHasConnected = true;
+    deviceHasDisconnected = false;
+    notifyListeners();
+  }
+
+  String getSignalStatus(int rssi) {
+    if (rssi >= -50) {
+      return "Very Close";
+    } else if (rssi >= -65) {
+      return "Close";
+    } else if (rssi >= -75) {
+      return "Nearby";
+    } else if (rssi >= -85) {
+      return "Far";
+    } else {
+      return "Very Far";
+    }
   }
 }

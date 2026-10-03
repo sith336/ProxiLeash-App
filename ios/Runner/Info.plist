@@ -45,6 +45,11 @@
 					<string>Main</string>
 				</dict>
 			</array>
+
+			<key>NSBluetoothAlwaysUsageDescription</key>
+			<string>ProxiLeash uses Bluetooth to connect to and track your ProxiLeash device.</string>
+			<key>NSBluetoothPeripheralUsageDescription</key>
+			<string>ProxiLeash uses Bluetooth to connect to and track your ProxiLeash device.</string>
 		</dict>
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
