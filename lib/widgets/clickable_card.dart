@@ -5,8 +5,7 @@ class ClickableCard extends StatelessWidget {
   final Widget child;
   final VoidCallback? onTap;
 
-  const ClickableCard({Key? key, required this.child, this.onTap})
-    : super(key: key);
+  const ClickableCard({super.key, required this.child, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +15,19 @@ class ClickableCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
 
         // Tap effect
-        splashColor: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+        splashColor: Theme.of(
+          context,
+        ).colorScheme.primary.withValues(alpha: 0.15),
 
         // While pressing
-        highlightColor: Theme.of(context).colorScheme.primary.withOpacity(0.08),
+        highlightColor: Theme.of(
+          context,
+        ).colorScheme.primary.withValues(alpha: 0.08),
 
         // Desktop/web hover
-        hoverColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
+        hoverColor: Theme.of(
+          context,
+        ).colorScheme.primary.withValues(alpha: 0.05),
 
         child: child,
       ),

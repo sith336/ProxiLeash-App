@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'glass_panel.dart';
 
 class FloatNavigationBar extends StatelessWidget {
   final int currentScreen;
@@ -16,73 +15,86 @@ class FloatNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface.withValues(alpha: 0.7),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
+    final destinations = [
+      (label: 'Home', icon: Icons.home_rounded),
+      (label: 'Device', icon: Icons.bluetooth_rounded),
+      (label: 'Settings', icon: Icons.tune_rounded),
+    ];
+
+    return GlassPanel(
+      padding: const EdgeInsets.all(7),
+      borderRadius: 22,
+      child: Row(
+        children: [
+          for (var index = 0; index < destinations.length; index++)
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3),
+                child: _NavigationDestination(
+                  label: destinations[index].label,
+                  icon: destinations[index].icon,
+                  selected: currentScreen == index,
+                  onTap: () => onScreenChanged(index),
+                  theme: theme,
+                ),
               ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NavigationDestination extends StatelessWidget {
+  const _NavigationDestination({
+    required this.label,
+    required this.icon,
+    required this.selected,
+    required this.onTap,
+    required this.theme,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onTap;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedColor = theme.brightness == Brightness.dark
+        ? theme.colorScheme.secondary
+        : theme.colorScheme.primary;
+
+    return Material(
+      color: selected
+          ? selectedColor.withValues(alpha: 0.16)
+          : Colors.transparent,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  onScreenChanged(0);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: currentScreen == 0
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.surface,
-                  foregroundColor: currentScreen == 0
-                      ? Colors.white
-                      : theme.colorScheme.onSurface,
-                  elevation: 0,
-                ),
-                child: const Text("Home"),
+              Icon(
+                icon,
+                size: 21,
+                color: selected
+                    ? selectedColor
+                    : theme.colorScheme.onSurfaceVariant,
               ),
-
-              ElevatedButton(
-                onPressed: () {
-                  onScreenChanged(1);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: currentScreen == 1
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.surface,
-                  foregroundColor: currentScreen == 1
-                      ? Colors.white
-                      : theme.colorScheme.onSurface,
-                  elevation: 0,
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: selected
+                      ? selectedColor
+                      : theme.colorScheme.onSurfaceVariant,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 ),
-                child: const Text("Device"),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  onScreenChanged(2);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: currentScreen == 2
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.surface,
-                  foregroundColor: currentScreen == 2
-                      ? Colors.white
-                      : theme.colorScheme.onSurface,
-                  elevation: 0,
-                ),
-                child: const Text("Settings"),
               ),
             ],
           ),

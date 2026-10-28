@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:proxileash/screens/home_screen.dart';
+import 'package:proxileash/widgets/glass_header.dart';
 
+import '../widgets/background_full.dart';
 import '../widgets/navigation_bar.dart';
 import 'device_screen.dart';
 import 'settings_screen.dart';
@@ -21,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
     const SettingsScreen(),
   ];
 
-  final List<String> screenTitles = ["Home", "Device", "Settings"];
+  final List<String> screenTitles = ['Home', 'Device', 'Settings'];
 
   void changeScreen(int choice) {
     setState(() {
@@ -35,58 +37,28 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // =========================
-          // BACKGROUND
-          // =========================
-          Opacity(
-            opacity: 0.3,
-            child: Image.asset('assets/bg.png', fit: BoxFit.cover),
-          ),
-
-          // =========================
-          // SAFE AREA CONTENT
-          // =========================
-          SafeArea(
+      body: AppBackground(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 14, 20, 8),
             child: Column(
               children: [
-                // =========================
-                // HEADER
-                // =========================
-                Column(
-                  children: [
-                    Text("ProxiLeash", style: theme.textTheme.headlineLarge),
-
-                    const SizedBox(height: 16),
-                    Text(
-                      screenTitles[currentScreen],
-                      style: theme.textTheme.headlineSmall,
-                    ),
-                  ],
+                GlassHeader(
+                  title: 'ProxiLeash',
+                  subtitle: screenTitles[currentScreen],
                 ),
-
-                SizedBox(height: 32),
-
-                // =========================
-                // SCREEN CONTENT
-                // =========================
+                const SizedBox(height: 14),
                 Expanded(child: screens[currentScreen]),
-
-                // =========================
-                // NAVIGATION BAR
-                // =========================
+                const SizedBox(height: 10),
                 FloatNavigationBar(
                   currentScreen: currentScreen,
                   onScreenChanged: changeScreen,
                 ),
-
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
